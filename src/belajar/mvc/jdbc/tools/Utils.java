@@ -26,4 +26,14 @@ public class Utils {
     int last = menuList.length;
     return  "("+ base + "-"+ last +")";
   }
+
+  public static Integer checkInt(String value, String message){
+
+    try{
+      return Integer.parseInt(value);
+    }catch (NumberFormatException e) {
+      System.err.println(message);
+    }
+    return null;
+  }
 }

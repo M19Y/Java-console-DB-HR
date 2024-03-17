@@ -8,10 +8,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CountryDAO {
+public class CountryDAO implements DAO<Country, String>{
 
 
-  public List<Country> getAllCountry(){
+  @Override
+  public List<Country> getAll(){
     List<Country> countries = new ArrayList<>();
 
     try (Connection connection = DBConnection.getConnection()){
@@ -41,6 +42,7 @@ public class CountryDAO {
     return countries;
   }
 
+  @Override
   public Country findById(String id){
 
     try (Connection connection = DBConnection.getConnection()){
@@ -69,6 +71,8 @@ public class CountryDAO {
 
     return null;
   }
+
+  @Override
   public boolean searchName(String name) {
     try (Connection connection = DBConnection.getConnection()){
 
@@ -92,6 +96,7 @@ public class CountryDAO {
     return false;
   }
 
+  @Override
   public void create(Country country) {
     try (Connection connection = DBConnection.getConnection()){
 
@@ -109,6 +114,7 @@ public class CountryDAO {
     }
   }
 
+  @Override
   public void delete(String id) {
     try (Connection connection = DBConnection.getConnection()){
 
@@ -124,6 +130,7 @@ public class CountryDAO {
     }
   }
 
+  @Override
   public void update(Country country){
 
     try (Connection connection = DBConnection.getConnection()){
@@ -142,6 +149,7 @@ public class CountryDAO {
     }
   }
 
+  @Override
   public List<Country> searchByName(String name){
 
     List<Country> countries = new ArrayList<>();

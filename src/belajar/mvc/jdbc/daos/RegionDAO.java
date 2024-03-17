@@ -7,8 +7,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegionDAO {
+public class RegionDAO implements DAO<Region, Integer>{
 
+  @Override
   public List<Region> getAll(){
 
     List<Region> regions = new ArrayList<>();
@@ -39,6 +40,7 @@ public class RegionDAO {
     return regions;
   }
 
+  @Override
   public void create(Region region){
 
     try (Connection connection = DBConnection.getConnection()){
@@ -55,7 +57,8 @@ public class RegionDAO {
     }
   }
 
-  public Region findById(int id){
+  @Override
+  public Region findById(Integer id){
 
     try (Connection connection = DBConnection.getConnection()){
 
@@ -81,6 +84,7 @@ public class RegionDAO {
     return null;
   }
 
+  @Override
   public List<Region> searchByName(String name){
 
     List<Region> regions = new ArrayList<>();
@@ -108,6 +112,7 @@ public class RegionDAO {
     return regions;
   }
 
+  @Override
   public boolean searchName(String name){
 
     try (Connection connection = DBConnection.getConnection()){
@@ -132,7 +137,8 @@ public class RegionDAO {
     return false;
   }
 
-  public void delete(int id){
+  @Override
+  public void delete(Integer id){
 
     try (Connection connection = DBConnection.getConnection()){
 
@@ -148,6 +154,7 @@ public class RegionDAO {
     }
   }
 
+  @Override
   public void update(Region region){
 
     try (Connection connection = DBConnection.getConnection()){

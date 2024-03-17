@@ -4,6 +4,7 @@ import belajar.mvc.jdbc.controllers.CountryController;
 import belajar.mvc.jdbc.daos.RegionDAO;
 import belajar.mvc.jdbc.models.Country;
 import belajar.mvc.jdbc.models.Region;
+import belajar.mvc.jdbc.tools.Utils;
 
 import java.util.Objects;
 import java.util.Scanner;
@@ -11,13 +12,10 @@ import java.util.Scanner;
 public class CountryView {
 
   private final CountryController controller;
-
-  private final RegionDAO regionDAO;
   private final Scanner scanner;
 
-  public CountryView(CountryController controller, RegionDAO regionDAO) {
+  public CountryView(CountryController controller) {
     this.controller = controller;
-    this.regionDAO = regionDAO;
     this.scanner = new Scanner(System.in);
   }
 
@@ -35,20 +33,13 @@ public class CountryView {
     String name = scanner.nextLine();
 
     System.out.print("Region id: ");
-    String regionId = scanner.nextLine();
+    String region = scanner.nextLine();
 
-    try {
-      int inId = Integer.parseInt(regionId);
-      Region region = regionDAO.findById(inId);
+    Integer regionId = Utils.checkInt(region, "Input region id harus berupa angka!");
 
-      if (Objects.nonNull(region)) {
-        Country country = new Country(id, name, region);
-        controller.create(country);
-      }else{
-        System.err.println("Region tidak ditemukan!");
-      }
-    } catch (NumberFormatException e) {
-      System.err.println("Input region id harus berupa angka!");
+    if (Objects.nonNull(regionId)) {
+      Country country = new Country(id, name);
+      controller.create(country, regionId);
     }
 
   }
@@ -91,9 +82,14 @@ public class CountryView {
     String name = scanner.nextLine();
 
     System.out.print("New region id: ");
-    String regionId = scanner.nextLine();
+    String region = scanner.nextLine();
 
-    controller.update(id, name, regionId);
+    Integer regionId = Utils.checkInt(region, "Input region id harus berupa angka!");
+
+    if (Objects.nonNull(regionId)) {
+      controller.update(id, name, regionId);
+    }
+
   }
   public static void title(String title){
     System.out.println("\n\t\t\t\t\t\t==== " + title + " ====\n");

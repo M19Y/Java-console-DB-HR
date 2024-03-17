@@ -12,13 +12,15 @@ import java.util.Objects;
 public class CountryController {
 
   private final CountryDAO countryDAO;
+  private final RegionDAO regionDAO;
 
-  public CountryController(CountryDAO countryDAO) {
+  public CountryController(CountryDAO countryDAO, RegionDAO regionDAO) {
     this.countryDAO = countryDAO;
+    this.regionDAO = regionDAO;
   }
 
   public void getAllCountry() {
-    List<Country> countries = countryDAO.getAllCountry();
+    List<Country> countries = countryDAO.getAll();
 
     if (countries.size() > 0) {
 
@@ -32,15 +34,21 @@ public class CountryController {
     }
   }
 
-  public void create(Country country) {
+  public void create(Country country, Integer regionId) {
 
     if (!countryDAO.searchName(country.getName()) && !Objects.nonNull(countryDAO.findById(country.getId()))) {
 
-      if (country.getName().length() > 3) {
-        countryDAO.create(country);
-        System.out.println("Berhasil menambahkan country baru");
-      } else {
-        System.err.println("Panjang country name harus lebih dari 3 character!");
+      Region region = regionDAO.findById(regionId);
+      if(Objects.nonNull(region)){
+        country.setRegion(region);
+        if (country.getName().length() > 3) {
+          countryDAO.create(country);
+          System.out.println("Berhasil menambahkan country baru");
+        } else {
+          System.err.println("Panjang country name harus lebih dari 3 character!");
+        }
+      }else{
+        System.err.println("Region tidak ditemukan!");
       }
 
     } else {
@@ -48,9 +56,9 @@ public class CountryController {
     }
   }
 
-  public void findById(String input) {
+  public void findById(String id) {
 
-    Country country = countryDAO.findById(input);
+    Country country = countryDAO.findById(id);
     if (Objects.nonNull(country)) {
       CountryView.header("Search Result");
       CountryView.content(country);
@@ -85,16 +93,12 @@ public class CountryController {
     }
   }
 
-  public void update(String id, String name, String regionId) {
+  public void update(String id, String name, Integer regionId) {
 
     if(Objects.nonNull(countryDAO.findById(id))){
       if (!countryDAO.searchName(name)) {
-        try {
 
-          int parseRegionId = Integer.parseInt(regionId);
-          RegionDAO regionDAO = new RegionDAO();
-          Region regionCandidate = regionDAO.findById(parseRegionId);
-
+          Region regionCandidate = regionDAO.findById(regionId);
           if (Objects.nonNull(regionCandidate)) {
             countryDAO.update(new Country(id, name, regionCandidate));
             System.out.println("Berhasil mengupdate country");
@@ -102,9 +106,6 @@ public class CountryController {
             System.err.println("Region tidak ditemukan!");
           }
 
-        } catch (NumberFormatException e) {
-          System.err.println("Input region id harus berupa angka!");
-        }
       } else {
         System.err.println("Nama country yang di input, sudah ada di database!");
       }

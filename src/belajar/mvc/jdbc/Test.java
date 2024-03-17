@@ -8,17 +8,29 @@ public class Test {
     AppView app = new AppView();
     app.mainMenu();
 
+    /*LocationDAO dao = new LocationDAO();
+    List<Location> locations = dao.getAll();
+
+    for (Location location : locations) {
+      System.out.println(
+              String.join(", ",
+              String.valueOf(location.getId()),
+                      location.getPostalCode(),
+                      location.getCity(),
+                      location.getStateProvince(),
+                      location.getStreetAddress(),
+                      location.getCountry().getName()
+              )
+      );
+
+    }*/
+
+
+/*    LocationView app = new LocationView(
+            new LocationController(
+                    new LocationDAO(),
+                    new CountryDAO()));
+    app.showLocations();*/
   }
 
-  // CountryDAO countryDAO = new CountryDAO();
-//    RegionDAO regionDAO = new RegionDAO();
-//    CountryController controller = new CountryController(countryDAO, regionDAO);
-//    CountryView view = new CountryView(controller, regionDAO);
-//
-////    view.showCountries();
-////    view.insertCountry();
-////    view.update();
-////    view.searchByName();
-////    view.findById();
-////    view.remove();
 }
